@@ -35,10 +35,10 @@ for c in contours:
         pass
     else:
         cv.imwrite('C:/Users/gabri/Pictures/img_{}.jpg'.format(i), img[y:y+h,x:x+w])      # to save the images
-    i += 1
+        i += 1
 cv.destroyAllWindows()
 
-result = cv.imread('C:/Users/gabri/Pictures/img_0.jpg')
-print(result)
-text = pytesseract.image_to_string(result)
-print(text)
+for j in range (i-1, -1, -1):
+    result = cv.imread(f'C:/Users/gabri/Pictures/img_{j}.jpg')
+    text = pytesseract.image_to_string(result)
+    print(text)
