@@ -2,6 +2,9 @@ import imageio
 import pyautogui
 import numpy as np
 import cv2 as cv
+import pytesseract
+
+
 myScreenshot = pyautogui.screenshot(region=(655,150,1250,820))
 image_path = 'C:/Users/gabri/Pictures/answers.png'
 myScreenshot.save(image_path)
@@ -34,3 +37,8 @@ for c in contours:
         cv.imwrite('C:/Users/gabri/Pictures/img_{}.jpg'.format(i), img[y:y+h,x:x+w])      # to save the images
     i += 1
 cv.destroyAllWindows()
+
+result = cv.imread('C:/Users/gabri/Pictures/img_0.jpg')
+print(result)
+text = pytesseract.image_to_string(result)
+print(text)
