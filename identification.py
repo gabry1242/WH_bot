@@ -20,12 +20,17 @@ cv.imshow("countour", image_copy)
 cv.waitKey(0)
 
 
+#I am not interested in my messages so I would likely want to remove those
+#look at the pixel color and discard the one with a green color
 #Block that saves all the countour in different images, iterates through all the countours and crop the image based on the bounding rect
 i = 0
 for c in contours:
     # get the bounding rect
     x, y, w, h = cv.boundingRect(c)
-    # to save the images
-    cv.imwrite('C:/Users/gabri/Pictures/img_{}.jpg'.format(i), img[y:y+h,x:x+w])
+    px =img[int(y+3), int(x+w/2)]  #looking at a pixel top middle of the message 
+    if px[1] > 60: #if the pixel green channel is higher than 60 (hence pixel is green don't save the message) we just care about other's messages
+        pass
+    else:
+        cv.imwrite('C:/Users/gabri/Pictures/img_{}.jpg'.format(i), img[y:y+h,x:x+w])      # to save the images
     i += 1
 cv.destroyAllWindows()
