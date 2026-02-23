@@ -40,5 +40,9 @@ cv.destroyAllWindows()
 
 for j in range (i-1, -1, -1):
     result = cv.imread(f'C:/Users/gabri/Pictures/img_{j}.jpg')
-    text = pytesseract.image_to_string(result)
+    res_gray = cv.cvtColor(result, cv.COLOR_BGR2GRAY)
+    res_tresh, res_thresh = cv.threshold(res_gray, 160, 255, 0)
+    cv.imshow("countour", res_thresh)
+    cv.waitKey(0)
+    text = pytesseract.image_to_string(res_thresh, lang='ita')
     print(text)
