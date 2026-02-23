@@ -40,9 +40,13 @@ cv.destroyAllWindows()
 
 for j in range (i-1, -1, -1):
     result = cv.imread(f'C:/Users/gabri/Pictures/img_{j}.jpg')
-    res_gray = cv.cvtColor(result, cv.COLOR_BGR2GRAY)
-    res_tresh, res_thresh = cv.threshold(res_gray, 160, 255, 0)
-    cv.imshow("countour", res_thresh)
+    print(result.shape)
+    h,w,c = result.shape
+    cropped = result[:, :w-37]
+    cv.imshow("cropped", cropped)
+    res_gray = cv.cvtColor(cropped, cv.COLOR_BGR2GRAY)
+    _, binary_image = cv.threshold(res_gray, 180, 255, cv.THRESH_BINARY + cv.THRESH_OTSU)
+    cv.imshow("countour", binary_image)
     cv.waitKey(0)
-    text = pytesseract.image_to_string(res_thresh, lang='ita')
+    text = pytesseract.image_to_string(binary_image, lang='ita')
     print(text)
