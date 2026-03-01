@@ -1,21 +1,17 @@
-import torch
-import numpy as np
-from transformers import DistilBertForSequenceClassification, DistilBertTokenizerFast
+import re
+import spacy
+from spacy.matcher import PhraseMatcher, Matcher
 
-# Load trained model (NOT base model)
-model_path = "./final_model"   # or wherever Trainer saved it
-model = DistilBertForSequenceClassification.from_pretrained(model_path)
-tokenizer = DistilBertTokenizerFast.from_pretrained(model_path)
+nlp = spacy.load("en_core_web_sm")
 
-model.eval()
+phrase_keywords = [
+    "battery life",
+    "customer service",
+    "refund policy",
+]
 
-def predict_class(text: str):
-    inputs = tokenizer(text, return_tensors="pt", truncation=True)
-    with torch.no_grad():
-        outputs = model(**inputs)
-        logits = outputs.logits
-        probs = torch.softmax(logits, dim=-1).squeeze().cpu().numpy()
-    pred = int(np.argmax(probs))
-    return {"pred_label": pred, "prob_0": float(probs[0]), "prob_1": float(probs[1])}
+phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
+phrase_patterns = [nlp.make_doc(p) for p in phrase_keywords]
+phrase_matcher.add("KW_PHRASE", phrase_patterns)
 
-print(predict_class("ok sigma"))
+print(phrase_patterns)
