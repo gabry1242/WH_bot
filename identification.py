@@ -49,7 +49,7 @@ for j in range (i-1, -1, -1):
     #since time is always in the same spot harcode the value
     print(tuple(bckgrnd_color))
     tuple_color = tuple(bckgrnd_color)
-    cropped = cv.rectangle(result, (w-37,h-25), (w,h), (56, 53, 186), -1)
+    cropped = cv.rectangle(result, (w-37,h-25), (w,h), (38, 38, 36), -1)
     # cropped = result[:, :w-37]
     cv.imshow("cropped", cropped)
     res_gray = cv.cvtColor(cropped, cv.COLOR_BGR2GRAY)
