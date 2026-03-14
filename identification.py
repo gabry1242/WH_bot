@@ -27,6 +27,7 @@ cv.waitKey(0)
 #look at the pixel color and discard the one with a green color
 #Block that saves all the countour in different images, iterates through all the countours and crop the image based on the bounding rect
 i = 0
+bckgrnd_color = 0
 for c in contours:
     # get the bounding rect
     x, y, w, h = cv.boundingRect(c)
@@ -36,13 +37,20 @@ for c in contours:
     else:
         cv.imwrite('C:/Users/gabri/Pictures/img_{}.jpg'.format(i), img[y:y+h,x:x+w])      # to save the images
         i += 1
+        bckgrnd_color = px
 cv.destroyAllWindows()
 
 for j in range (i-1, -1, -1):
     result = cv.imread(f'C:/Users/gabri/Pictures/img_{j}.jpg')
     print(result.shape)
     h,w,c = result.shape
-    cropped = result[:, :w-37]
+    #blur out the time, can create confusion for pytesseract
+    #just draw a filled rectangle on top of the time with the same color of the background,
+    #since time is always in the same spot harcode the value
+    print(tuple(bckgrnd_color))
+    tuple_color = tuple(bckgrnd_color)
+    cropped = cv.rectangle(result, (w-37,h-25), (w,h), (56, 53, 186), -1)
+    # cropped = result[:, :w-37]
     cv.imshow("cropped", cropped)
     res_gray = cv.cvtColor(cropped, cv.COLOR_BGR2GRAY)
     _, binary_image = cv.threshold(res_gray, 180, 255, cv.THRESH_BINARY + cv.THRESH_OTSU)
