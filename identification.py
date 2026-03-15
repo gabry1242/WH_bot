@@ -42,14 +42,11 @@ cv.destroyAllWindows()
 
 for j in range (i-1, -1, -1):
     result = cv.imread(f'C:/Users/gabri/Pictures/img_{j}.jpg')
-    print(result.shape)
     h,w,c = result.shape
     #blur out the time, can create confusion for pytesseract
     #just draw a filled rectangle on top of the time with the same color of the background,
     #since time is always in the same spot harcode the value
-    print(tuple(bckgrnd_color))
-    tuple_color = tuple(bckgrnd_color)
-    cropped = cv.rectangle(result, (w-37,h-25), (w,h), (38, 38, 36), -1)
+    cropped = cv.rectangle(result, (w-37,h-25), (w,h), (int(bckgrnd_color[0]), int(bckgrnd_color[1]), int(bckgrnd_color[2])), -1)
     # cropped = result[:, :w-37]
     cv.imshow("cropped", cropped)
     res_gray = cv.cvtColor(cropped, cv.COLOR_BGR2GRAY)
