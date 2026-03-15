@@ -50,8 +50,17 @@ for j in range (i-1, -1, -1):
     # cropped = result[:, :w-37]
     cv.imshow("cropped", cropped)
     res_gray = cv.cvtColor(cropped, cv.COLOR_BGR2GRAY)
-    _, binary_image = cv.threshold(res_gray, 180, 255, cv.THRESH_BINARY + cv.THRESH_OTSU)
+
+    #invert the color because pytesseract is trained black text on white background and not viceversa
+    inverted = cv.bitwise_not(res_gray)
+    #scale the image, bigger text easier to classify
+    scale = 2
+    resized = cv.resize(inverted, None, fx=scale, fy=scale, interpolation=cv.INTER_CUBIC)
+    _, binary_image = cv.threshold(resized, 0, 255, cv.THRESH_BINARY + cv.THRESH_OTSU)
     cv.imshow("countour", binary_image)
     cv.waitKey(0)
     text = pytesseract.image_to_string(binary_image, lang='ita')
     print(text)
+
+
+#Get rid of emojis, idea is with colored image get rid of everything that is fully white. and remove what is left
